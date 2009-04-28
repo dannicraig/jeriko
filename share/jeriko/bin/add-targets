@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ARGS=$@
+if [ "$ARGS" ]
+then
+	for TARGET in $ARGS
+	do
+		echo $TARGET >> targets.txt
+	done
+else
+	cat >> targets.txt
+fi
+
+TMPFILE=`mktemp`; cat targets.txt | sort | uniq > $TMPFILE; mv $TMPFILE targets.txt

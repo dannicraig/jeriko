@@ -1,0 +1,22 @@
+#!/bin/sh
+
+BIN_RG1='s/\\/\\\\/g'
+BIN_RG2='s/\//\\\//g'
+BIN_DIR=`dirname $0 | sed -r -e "s/^([^/]{1})/\`pwd | sed -r -e $BIN_RG1 -e $BIN_RG2 \`\/\1/"`/
+
+export JERIKO_HOME=$BIN_DIR/../share/jeriko/
+JERIKO_HOME_BIN=$JERIKO_HOME/bin/
+JERIKO_HOME_ETC=$JERIKO_HOME/etc/
+
+export PATH=$JERIKO_HOME:$PATH
+
+echo "[*] Jeriko v0.1"
+
+if [ "$_" = "$0" ]
+then
+	$JERIKO_HOME_BIN/check-jeriko-dependencies
+	bash --rcfile $JERIKO_HOME_ETC/jerikorc 
+else
+	$JERIKO_HOME_BIN/check-jeriko-dependencies
+	bash $_ 
+fi

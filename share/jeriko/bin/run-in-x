@@ -1,0 +1,42 @@
+#!/bin/sh
+
+KILL_ALL() { pkill -P $$; exit; }
+trap KILL_ALL INT
+
+SERVER_NUMBER=99
+while [ -f /tmp/.X$SERVER_NUMBER-lock ]
+do
+	SERVER_NUMBER=`expr $SERVER_NUMBER + 1`
+done
+
+export DISPLAY=:$SERVER_NUMBER 
+
+TEMP_DIR=`mktemp -d`
+export XAUTHORITY=$TEMP_DIR/Xauthority
+
+xauth -f $XAUTHORITY_FILE add $DISPLAY . `mcookie` >/dev/null 2>&1
+Xvfb $DISPLAY $XVFB_OPTIONS -fbdir /tmp/ >/dev/null 2>&1 &
+
+if [ ! "$XVFB_STARTUP_TIME" ]
+then
+	sleep 5
+else
+	sleep $XVFB_STARTUP_TIME
+fi
+
+ARGS=$@
+if [ "$ARGS" ]
+then
+	for LINE in $ARGS
+	do
+		echo $LINE
+	done
+else
+	cat
+fi | sort | uniq | while read LINE
+do
+	echo "[*] executing $LINE..."
+	$LINE
+done
+
+rm -rf $TEMP_DIR

@@ -1,0 +1,46 @@
+#!/bin/sh
+
+KILL_ALL() { pkill -P $$; exit; }
+trap KILL_ALL INT
+
+if [ ! $MAX_PROCESSES ]; then MAX_PROCESSES=10; fi
+if [ ! $MAX_WAIT ]; then MAX_WAIT=10; fi
+
+echo "[p:0000] max processes: $MAX_PROCESSES"
+echo "[p:0000] max wait: $MAX_WAIT"
+
+CUR_PROCESS=0
+
+ARGS=$@
+if [ "$ARGS" ]
+then
+	for LINE in $ARGS
+	do
+		echo $LINE
+	done
+else
+	cat
+fi | while true
+do
+	if [ `pgrep -P $$ | wc -l` -lt $MAX_PROCESSES ]
+	then
+		read PROCESS
+
+		if [ ! "$PROCESS" ]
+		then
+			break
+		fi
+
+		echo "[p:0000] executing: $PROCESS"
+
+		CUR_PROCESS=`expr $CUR_PROCESS + 1`
+
+		($PROCESS 2>&1 | while read LINE; do echo "[p:`printf "%.4d" $CUR_PROCESS`] $LINE"; done) &
+
+		echo "[p:0000] pid: $!"
+	else
+		echo "[p:0000] currently running pids:" `pgrep -P $$ | sed -r -e 's/\n/ /g'`
+		echo "[p:0000] sleeping: $MAX_WAIT"
+		sleep $MAX_WAIT
+	fi
+done
