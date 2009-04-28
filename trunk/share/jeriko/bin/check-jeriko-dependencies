@@ -1,0 +1,23 @@
+#!/bin/sh
+
+check_for_cmd() {
+	if [ "$VERBOSE" ]
+	then
+		echo "[*] checking for cmd $1..."
+	fi
+
+	if [ ! `which $1` ]
+	then
+		echo "[x] cannot find $1" 1>&2
+		exit 1
+	fi
+}
+
+echo "[*] starting the dependency checking routine..."
+
+for DEP in `cat $JERIKO_HOME/etc/dependencies.cmd 2>/dev/null`
+do
+	check_for_cmd $DEP
+done
+
+echo "[*] dependencies...ok"

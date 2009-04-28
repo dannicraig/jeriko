@@ -1,0 +1,23 @@
+# LOAD THE SYSTEM-WIDE BASHRC
+if [ -f /etc/bash.bashrc ]
+then
+	. /etc/bash.bashrc
+fi
+
+# LOAD THE USER-SPECIFIC BASHRC
+if [ -f ~/.bashrc ]
+then
+	. ~/.bashrc
+fi
+
+# SETUP THE DEFAULT JERIKO PROMPT WITH SUPPORT FOR JERIKO PROJECTS
+PS1='`if [ -f .jerikoproject ];then cat .jerikoproject | sed -r -e "s/^/[/" -e "s/$/] /"; fi`jeriko> '
+
+# SETUP THE DEFAULT JERIKO PATH
+PATH=$JERIKO_HOME/bin/:$PATH
+
+# LOAD THE USER-SPECIFIC JERIKORC
+if [ -f ~/.jerikorc ]
+then
+	. ~/.jerikorc
+fi

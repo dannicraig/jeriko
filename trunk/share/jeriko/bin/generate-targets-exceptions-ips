@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ -f targets-exceptions.txt ]
+then
+	nmap -nsL -iL targets-exceptions.txt 2>/dev/null | grep -E 'not scanned$' | cut -d ' ' -f2 | sort | uniq
+fi

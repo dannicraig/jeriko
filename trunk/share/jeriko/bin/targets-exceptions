@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cat targets-exceptions.txt 2>/dev/null

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ARGS=$@
+if [ "$ARGS" ]
+then
+	for LINE in $ARGS
+	do
+		echo $LINE
+	done
+else
+	cat
+fi
