@@ -20,8 +20,10 @@ then
 
 	exit $?
 else
+	shift
+
 	export JERIKO_SHELL="non-interactive"
-	check-jeriko-dependencies && bash --rcfile $JERIKO_HOME_ETC/jerikorc $JERIKO_EXECUTABLE_FILE
+	check-jeriko-dependencies && bash --rcfile $JERIKO_HOME_ETC/jerikorc $JERIKO_EXECUTABLE_FILE $@
 
 	exit $?
 fi
