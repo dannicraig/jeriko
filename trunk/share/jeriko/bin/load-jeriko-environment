@@ -1,0 +1,12 @@
+#!/bin/bash
+#description: loads jeriko specific environment
+
+if uname -a | grep -i darwin 2>&1 >/dev/null
+then
+	alias sed.="sed -E"
+fi
+
+if uname -a | grep -i linux 2>&1 >/dev/null
+then
+	alias sed.="sed -r"
+fi

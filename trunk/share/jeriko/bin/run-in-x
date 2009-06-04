@@ -1,7 +1,8 @@
 #!/bin/sh
+#description: executes in sequence all that is provided as standard input within a x framebuffer server
 
-KILL_ALL() { pkill -P $$; exit; }
-trap KILL_ALL INT
+trap 'exit 0' HUP
+trap 'kill -s HUP 0' EXIT
 
 SERVER_NUMBER=99
 while [ -f /tmp/.X$SERVER_NUMBER-lock ]
@@ -14,7 +15,8 @@ export DISPLAY=:$SERVER_NUMBER
 TEMP_DIR=`mktemp -d`
 export XAUTHORITY=$TEMP_DIR/Xauthority
 
-xauth -f $XAUTHORITY_FILE add $DISPLAY . `mcookie` >/dev/null 2>&1
+RAND_VAL=$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM
+xauth -f $XAUTHORITY_FILE add $DISPLAY . $RAND_VAL >/dev/null 2>&1
 Xvfb $DISPLAY $XVFB_OPTIONS -fbdir /tmp/ >/dev/null 2>&1 &
 
 if [ ! "$XVFB_STARTUP_TIME" ]
@@ -24,19 +26,15 @@ else
 	sleep $XVFB_STARTUP_TIME
 fi
 
-ARGS=$@
-if [ "$ARGS" ]
-then
-	for LINE in $ARGS
-	do
-		echo $LINE
-	done
-else
-	cat
-fi | sort | uniq | while read LINE
+CUR_PROCESS=0
+
+foreach-input $@ | while read PROCESS
 do
-	echo "[*] executing $LINE..."
-	$LINE
+	echo "[p:00000] executing: $PROCESS"
+
+	CUR_PROCESS=`expr $CUR_PROCESS + 1`
+
+	($PROCESS 2>&1 | while read LINE; do echo "[p:`printf %.5d $CUR_PROCESS`] $LINE"; done)
 done
 
 rm -rf $TEMP_DIR

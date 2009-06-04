@@ -1,28 +1,20 @@
-#!/bin/sh
+#!/bin/bash
+#description: runs in parallel all that is provided as standard input
 
-KILL_ALL() { pkill -P $$; exit; }
-trap KILL_ALL INT
+trap 'exit 0' HUP
+trap 'kill -s HUP 0' EXIT
 
 if [ ! $MAX_PROCESSES ]; then MAX_PROCESSES=10; fi
 if [ ! $MAX_WAIT ]; then MAX_WAIT=10; fi
 
-echo "[p:0000] max processes: $MAX_PROCESSES"
-echo "[p:0000] max wait: $MAX_WAIT"
+echo "[p:00000] max processes: $MAX_PROCESSES"
+echo "[p:00000] max wait: $MAX_WAIT"
 
 CUR_PROCESS=0
 
-ARGS=$@
-if [ "$ARGS" ]
-then
-	for LINE in $ARGS
-	do
-		echo $LINE
-	done
-else
-	cat
-fi | while true
+foreach-input $@ | while true
 do
-	if [ `pgrep -P $$ | wc -l` -lt $MAX_PROCESSES ]
+	if [ `jobs -l | wc -l` -lt $MAX_PROCESSES ]
 	then
 		read PROCESS
 
@@ -31,16 +23,22 @@ do
 			break
 		fi
 
-		echo "[p:0000] executing: $PROCESS"
+		echo "[p:00000] executing: $PROCESS"
 
 		CUR_PROCESS=`expr $CUR_PROCESS + 1`
 
-		($PROCESS 2>&1 | while read LINE; do echo "[p:`printf "%.4d" $CUR_PROCESS`] $LINE"; done) &
-
-		echo "[p:0000] pid: $!"
+		($PROCESS 2>&1 | while read LINE; do echo "[p:`printf %.5d $CUR_PROCESS`] $LINE"; done) &
 	else
-		echo "[p:0000] currently running pids:" `pgrep -P $$ | sed -r -e 's/\n/ /g'`
-		echo "[p:0000] sleeping: $MAX_WAIT"
+		echo "[p:00000] currently running pids:" `jobs -l | grep -E '^\[[0-9]+\]' | awk '{ print $2 }'`
+		echo "[p:00000] sleeping: $MAX_WAIT"
 		sleep $MAX_WAIT
 	fi
 done
+
+if [ `jobs -l | wc -l` -gt 0 ]
+then
+	echo "[p:00000] finishing pids:" `jobs -l | grep -E '^\[[0-9]+\]' | awk '{ print $2 }'`
+	wait
+fi
+
+echo "[p:00000] done"

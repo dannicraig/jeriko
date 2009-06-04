@@ -1,22 +1,27 @@
-#!/bin/sh
+#!/bin/bash
 
-BIN_RG1='s/\\/\\\\/g'
-BIN_RG2='s/\//\\\//g'
-BIN_DIR=`dirname $0 | sed -r -e "s/^([^/]{1})/\`pwd | sed -r -e $BIN_RG1 -e $BIN_RG2 \`\/\1/"`/
+JERIKO_EXECUTABLE_FILE="$_"
 
-export JERIKO_HOME=$BIN_DIR/../share/jeriko/
+CWD=`pwd`; cd `dirname $0`; DIR=`pwd`; cd $CWD;
+
+export JERIKO_HOME=$DIR/../share/jeriko/
 JERIKO_HOME_BIN=$JERIKO_HOME/bin/
 JERIKO_HOME_ETC=$JERIKO_HOME/etc/
 
-export PATH=$JERIKO_HOME:$PATH
+export PATH=$JERIKO_HOME_BIN:$PATH
 
-echo "[*] Jeriko v0.1"
+echo "[*] Jeriko v0.2"
+source $JERIKO_HOME_BIN/load-jeriko-environment
 
-if [ "$_" = "$0" ]
+if [ "$JERIKO_EXECUTABLE_FILE" = "$0" ]
 then
-	$JERIKO_HOME_BIN/check-jeriko-dependencies
-	bash --rcfile $JERIKO_HOME_ETC/jerikorc 
+	export JERIKO_SHELL="interactive"
+	check-jeriko-dependencies && bash --rcfile $JERIKO_HOME_ETC/jerikorc 
+
+	exit $?
 else
-	$JERIKO_HOME_BIN/check-jeriko-dependencies
-	bash $_ 
+	export JERIKO_SHELL="non-interactive"
+	check-jeriko-dependencies && bash $JERIKO_EXECUTABLE_FILE
+
+	exit $?
 fi

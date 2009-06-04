@@ -1,4 +1,5 @@
 #!/bin/sh
+#description: removes targets exceptions from the targets-exceptions.txt file
 
 if [ -f targets-exceptions.txt ]
 then

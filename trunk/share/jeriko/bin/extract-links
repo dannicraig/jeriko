@@ -1,3 +1,4 @@
 #!/bin/sh
+#description: extracts links from html files provided as standard input
 
 grep -Eio "(src|href) *= *[\"'][^\"']*" | grep -Eo "[\"'].*" | cut -c2-

@@ -1,3 +1,4 @@
 #!/bin/sh
+#description: extracts services from nbe files provided as standard input
 
-cut -d'|' -f3-4 | grep -vE '^\|' | sed -r -e 's/ //' -e 's/(\||\/)/,/g' | grep '(' | sed -r -e 's/\(|\)/,/g' | awk -F, '{ print $1","$3","$4","$2 }' | sort | uniq
+cut -d'|' -f3-4 | grep -vE '^\|' | sed. -e 's/ //' -e 's/(\||\/)/,/g' | grep '(' | sed. -e 's/\(|\)/,/g' | awk -F, '{ print $1","$3","$4","$2 }' | sort | uniq

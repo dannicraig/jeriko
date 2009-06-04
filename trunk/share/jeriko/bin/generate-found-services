@@ -1,3 +1,4 @@
 #!/bin/sh
+#description: generates all found services extracted from the current working folder
 
 ((cat *.nbe 2>/dev/null | extract-services-nbe) & (cat *.gnmap 2>/dev/null | extract-services-gnmap)) | cut -d, -f1-3 | sort | uniq

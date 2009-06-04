@@ -1,4 +1,5 @@
 #!/bin/sh
+#description: removes targets from the targets.txt file
 
 if [ -f targets.txt ]
 then

@@ -1,0 +1,7 @@
+#!/bin/bash
+#description: runs in parallel tasks all that is provided as standard input
+
+foreach-input $@ | while read LINE
+do
+	echo "task $LINE"
+done | run-in-parallel

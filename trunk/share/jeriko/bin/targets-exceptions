@@ -1,3 +1,4 @@
 #!/bin/sh
+#description: extracts all targets exceptions from the current working directory
 
 cat targets-exceptions.txt 2>/dev/null

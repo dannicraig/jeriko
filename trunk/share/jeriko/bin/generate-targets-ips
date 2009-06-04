@@ -1,4 +1,5 @@
 #!/bin/sh
+#description: generates all targets extracted from the current working folder
 
 if [ -f targets.txt ]
 then
