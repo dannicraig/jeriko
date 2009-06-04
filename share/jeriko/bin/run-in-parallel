@@ -1,12 +1,13 @@
 #!/bin/bash
 #description: runs in parallel all that is provided as standard input
 
-#trap 'exit 0' HUP
-#trap 'kill -s HUP 0' EXIT
+trap 'exit 0' HUP
+trap 'kill -s HUP 0' EXIT
 
 if [ ! $MAX_PROCESSES ]; then MAX_PROCESSES=10; fi
 if [ ! $MAX_WAIT ]; then MAX_WAIT=10; fi
 
+echo "[p:00000] head"
 echo "[p:00000] max processes: $MAX_PROCESSES"
 echo "[p:00000] max wait: $MAX_WAIT"
 
@@ -14,12 +15,24 @@ CUR_PROCESS=0
 
 foreach-input $@ | while true
 do
-	if [ `jobs -l | wc -l` -lt $MAX_PROCESSES ]
+	if [ `jobs -pr | wc -l` -lt $MAX_PROCESSES ]
 	then
 		read PROCESS
 
 		if [ ! "$PROCESS" ]
 		then
+			while true
+			do
+				if [ `jobs -pr | wc -l` -gt 0 ]
+				then
+					echo "[p:00000] finishing pids:" `jobs -pr`
+					echo "[p:00000] sleeping: $MAX_WAIT"
+					sleep $MAX_WAIT
+				else
+					exit
+				fi
+			done
+
 			break
 		fi
 
@@ -29,15 +42,10 @@ do
 
 		($PROCESS 2>&1 | while read LINE; do echo "[p:`printf %.5d $CUR_PROCESS`] $LINE"; done) &
 	else
-		echo "[p:00000] currently running pids:" `jobs -l | grep -E '^\[[0-9]+\]' | awk '{ print $2 }'`
+		echo "[p:00000] currently running pids: "`jobs -p`
 		echo "[p:00000] sleeping: $MAX_WAIT"
 		sleep $MAX_WAIT
 	fi
 done
 
-if [ `jobs -l | wc -l` -gt 0 ]
-then
-	echo "[p:00000] finishing pids:" `jobs -l | grep -E '^\[[0-9]+\]' | awk '{ print $2 }'`
-fi
-
-wait
+echo "[p:00000] tail"
