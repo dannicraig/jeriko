@@ -1,8 +1,8 @@
 #!/bin/sh
 #description: executes in sequence all that is provided as standard input within a x framebuffer server
 
-#trap 'exit 0' HUP
-#trap 'kill -s HUP 0' EXIT
+trap 'exit 0' HUP
+trap 'kill -s HUP 0' EXIT
 
 SERVER_NUMBER=99
 while [ -f /tmp/.X$SERVER_NUMBER-lock ]
