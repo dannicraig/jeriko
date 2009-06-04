@@ -40,5 +40,4 @@ then
 	echo "[p:00000] finishing pids:" `jobs -l | grep -E '^\[[0-9]+\]' | awk '{ print $2 }'`
 fi
 
-echo "[p:00000] done"
 wait
