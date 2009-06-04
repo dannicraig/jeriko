@@ -1,8 +1,8 @@
 #!/bin/sh
 #description: executes in sequence all that is provided as standard input within a x framebuffer server
 
-trap 'exit 0' HUP
-trap 'kill -s HUP 0' EXIT
+#trap 'exit 0' HUP
+#trap 'kill -s HUP 0' EXIT
 
 SERVER_NUMBER=99
 while [ -f /tmp/.X$SERVER_NUMBER-lock ]
@@ -12,7 +12,7 @@ done
 
 export DISPLAY=:$SERVER_NUMBER 
 
-TEMP_DIR=`mktemp -d`
+TEMP_DIR=`mktemp -d .tmp.XXXXXX`
 export XAUTHORITY=$TEMP_DIR/Xauthority
 
 RAND_VAL=$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM

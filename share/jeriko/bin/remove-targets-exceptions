@@ -3,7 +3,7 @@
 
 if [ -f targets-exceptions.txt ]
 then
-	TMPFILE=`mktemp`
+	TMPFILE=`mktemp .tmp.XXXXXX`
 
 	if [ "$@" ]
 	then

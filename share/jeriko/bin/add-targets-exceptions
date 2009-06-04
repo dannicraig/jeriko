@@ -2,4 +2,4 @@
 #description: adds targets exceptions to targets-exceptions.txt file
 
 foreach-input $@ >> targets-exceptions.txt
-TMP_FILE_NAME=`mktemp tmp.XXXXXX` && cat targets-exceptions.txt | sort | uniq > $TMP_FILE_NAME && mv $TMP_FILE_NAME targets-exceptions.txt
+TMP_FILE_NAME=`mktemp .tmp.XXXXXX` && cat targets-exceptions.txt | sort | uniq > $TMP_FILE_NAME && mv $TMP_FILE_NAME targets-exceptions.txt

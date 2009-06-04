@@ -2,4 +2,4 @@
 # description: adds the specified targets to the targets.txt file
 
 foreach-input $@ >> targets.txt
-TMP_FILE_NAME=`mktemp tmp.XXXXXX` && cat targets.txt | sort | uniq > $TMP_FILE_NAME && mv $TMP_FILE_NAME targets.txt
+TMP_FILE_NAME=`mktemp .tmp.XXXXXX` && cat targets.txt | sort | uniq > $TMP_FILE_NAME && mv $TMP_FILE_NAME targets.txt

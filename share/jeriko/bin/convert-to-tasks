@@ -1,0 +1,12 @@
+#!/bin/bash
+#description: converts commands into tasks
+
+foreach-input $@ | while read COMMAND
+do
+	TASK_FILE_NAME=".`echo $COMMAND | sed. -e 's/[^0-9a-zA-Z]/_/g' -e 's/_+/_/g'`.`date +%s`.task"
+
+	echo "($COMMAND"' 2>&1 && rm -rf $0) | while read LINE; do echo "[t:$$] $LINE"; done' >$TASK_FILE_NAME
+	chmod +x $TASK_FILE_NAME
+
+	echo ./$TASK_FILE_NAME
+done

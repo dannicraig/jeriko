@@ -5,13 +5,13 @@ JERIKO_EXECUTABLE_FILE="$_"
 CWD=`pwd`; cd `dirname $0`; DIR=`pwd`; cd $CWD;
 
 export JERIKO_HOME=$DIR/../share/jeriko/
+JERIKO_HOME_HLP=$JERIKO_HOME/hlp/
 JERIKO_HOME_BIN=$JERIKO_HOME/bin/
 JERIKO_HOME_ETC=$JERIKO_HOME/etc/
 
-export PATH=$JERIKO_HOME_BIN:$PATH
+export PATH=$JERIKO_HOME_HLP:$JERIKO_HOME_BIN:$PATH
 
 echo "[*] Jeriko v0.2"
-source $JERIKO_HOME_BIN/load-jeriko-environment
 
 if [ "$JERIKO_EXECUTABLE_FILE" = "$0" ]
 then
@@ -21,7 +21,7 @@ then
 	exit $?
 else
 	export JERIKO_SHELL="non-interactive"
-	check-jeriko-dependencies && bash $JERIKO_EXECUTABLE_FILE
+	check-jeriko-dependencies && bash --rcfile $JERIKO_HOME_ETC/jerikorc $JERIKO_EXECUTABLE_FILE
 
 	exit $?
 fi

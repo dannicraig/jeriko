@@ -1,8 +1,8 @@
 #!/bin/bash
 #description: runs in parallel all that is provided as standard input
 
-trap 'exit 0' HUP
-trap 'kill -s HUP 0' EXIT
+#trap 'exit 0' HUP
+#trap 'kill -s HUP 0' EXIT
 
 if [ ! $MAX_PROCESSES ]; then MAX_PROCESSES=10; fi
 if [ ! $MAX_WAIT ]; then MAX_WAIT=10; fi
@@ -38,7 +38,7 @@ done
 if [ `jobs -l | wc -l` -gt 0 ]
 then
 	echo "[p:00000] finishing pids:" `jobs -l | grep -E '^\[[0-9]+\]' | awk '{ print $2 }'`
-	wait
 fi
 
 echo "[p:00000] done"
+wait
