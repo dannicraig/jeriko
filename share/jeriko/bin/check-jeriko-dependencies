@@ -1,17 +1,32 @@
-#!/bin/sh
+#!/bin/bash
+#description: checks for various jeriko dependencies
+
+EXIT_CODE=0
+EXIT_MESSAGE="[*] dependencies check...ok"
 
 check_for_cmd() {
-	if [ "$VERBOSE" ]
-	then
-		echo "[*] checking for cmd $1..."
-	fi
+	echo "[*] checking for cmd $1..."
 
 	if [ ! `which $1` ]
 	then
 		echo "[x] cannot find $1" 1>&2
-		exit 1
+
+		if [ "$JERIKO_SHELL" = "non-interactive" ]
+		then
+			EXIT_CODE=1
+			EXIT_MESSAGE="[x] dependencies check...failed"
+		else
+			EXIT_CODE=0
+			EXIT_MESSAGE="[x] dependencies check...failed"
+		fi
 	fi
 }
+
+if [ ! -f $JERIKO_HOME/etc/dependencies.cmd ]
+then
+	echo "[x] cannot find JERIKO_HOME" 1>&2
+	exit 1
+fi
 
 echo "[*] starting the dependency checking routine..."
 
@@ -20,4 +35,5 @@ do
 	check_for_cmd $DEP
 done
 
-echo "[*] dependencies...ok"
+echo $EXIT_MESSAGE
+exit $EXIT_CODE

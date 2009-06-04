@@ -1,3 +1,4 @@
 #!/bin/sh
+#description: extracts url-like strings from the standard input
 
 grep -Eo "[a-zA-Z0-9]+://[a-zA-Z0-9_#&=+%,/\.\?-]+"

@@ -2,17 +2,10 @@ rm
 mktemp
 sleep
 expr
-pgrep
-pkill
 awk
 xargs
 screen
 script
 xauth
-wget
 Xvfb
-import
-firefox
 nmap
-msfconsole
-nessus

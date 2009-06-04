@@ -1,3 +1,4 @@
 #!/bin/sh
+#description: extracts security issues from nbe files provided as standard input
 
-grep -E '^results\|' | grep 'Security Warning' | sed -r -e 's/\|\\n/|/' -e 's/Description\s*:.*//' -e 's/Synopsis\s*:\s*(\\n)*//' -e 's/\\n/ /g' | cut -d'|' -f7
+grep -E '^results\|' | grep 'Security Warning' | sed. -e 's/\|\\n/|/' -e 's/Description\s*:.*//' -e 's/Synopsis\s*:\s*(\\n)*//' -e 's/\\n/ /g' | cut -d'|' -f7

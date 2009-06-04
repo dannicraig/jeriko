@@ -1,4 +1,4 @@
 #!/bin/sh
+#description: extracts titles-like strings from the standard input
 
-CAPWORD="([A-Z]{1}[-_'a-z]+ ?)"
-grep -Eo "($CAPWORD){2,}"
+CAPWORD="([A-Z]{1}[-_'a-z]+ ?)" grep -Eo "($CAPWORD){2,}"

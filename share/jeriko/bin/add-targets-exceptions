@@ -1,14 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+#description: adds targets exceptions to targets-exceptions.txt file
 
-ARGS=$@
-if [ "$ARGS" ]
-then
-	for TARGET in $ARGS
-	do
-		echo $TARGET >> targets-exceptions.txt
-	done
-else
-	cat >> targets-targets.txt
-fi
-
-TMPFILE=`mktemp`; cat targets-exceptions.txt | sort | uniq > $TMPFILE; mv $TMPFILE targets-exceptions.txt
+foreach-input $@ >> targets-exceptions.txt
+TMP_FILE_NAME=`mktemp tmp.XXXXXX` && cat targets-exceptions.txt | sort | uniq > $TMP_FILE_NAME && mv $TMP_FILE_NAME targets-exceptions.txt

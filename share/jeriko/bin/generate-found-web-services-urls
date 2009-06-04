@@ -1,3 +1,4 @@
 #!/bin/sh
+#description: generates all found service urls extracted from the current working folder
 
-((cat *.nbe 2>/dev/null | extract-services-nbe) & (cat *.gnmap 2>/dev/null | extract-services-gnmap)) | grep -i 'http' |  awk -F, '{ print $4"://"$1":"$2"/" }' | sed -r -e 's/^.*https:/https:/' -e 's/^.*http:/http:/' -e 's/^https-[^:]*/https/' -e 's/http-[^:]*/http/'
+((cat *.nbe 2>/dev/null | extract-services-nbe) & (cat *.gnmap 2>/dev/null | extract-services-gnmap)) | grep -i 'http' |  awk -F, '{ print $4"://"$1":"$2"/" }' | sed. -e 's/^.*https:/https:/' -e 's/^.*http:/http:/' -e 's/^https-[^:]*/https/' -e 's/http-[^:]*/http/'

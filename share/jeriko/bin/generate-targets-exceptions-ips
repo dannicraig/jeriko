@@ -1,4 +1,5 @@
 #!/bin/sh
+#description: generates targets exceptions extracted from the current working folder
 
 if [ -f targets-exceptions.txt ]
 then
