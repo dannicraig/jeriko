@@ -1,4 +1,5 @@
 #!/bin/sh
 #description: extracts name-like strings from the standard input
 
-CAPWORD="([A-Z]{1}['a-z]+)" grep -Eo -e "$CAPWORD $CAPWORD" -e "$CAPWORD [A-Z]{1} $CAPWORD"
+CAPWORD="([A-Z]{1}['a-z]+)"
+grep -Eo -e "$CAPWORD $CAPWORD" -e "$CAPWORD [A-Z]{1} $CAPWORD"

@@ -10,8 +10,8 @@ then
 	. ~/.bashrc
 fi
 
-# SETUP THE DEFAULT JERIKO PROMPT WITH SUPPORT FOR JERIKO PROJECTS
-PS1='`if [ -f .jerikoproject ];then cat .jerikoproject | sed -r -e "s/^/[/" -e "s/$/] /"; fi`jeriko> '
+# SETUP THE DEFAULT JERIKO PROMPT
+PS1='jeriko> '
 
 # SETUP THE DEFAULT JERIKO PATH
 PATH=$JERIKO_HOME/bin/:$PATH
