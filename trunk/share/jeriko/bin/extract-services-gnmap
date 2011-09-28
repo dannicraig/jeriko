@@ -4,10 +4,21 @@
 grep -E '^Host:' | while read LINE
 do
 	HOST=`echo $LINE | sed. -e 's/Host: ([^ ]*).*/\1/'`
+	LINE=`echo $LINE | sed. -e 's/.*Ports: *//'`
 
-	echo $LINE | sed. -e 's/.*Ports: //' -e 's/, /\n/g' | grep '/open/' | sed. -e 's/\/open\//\//' | awk -F'/' '{ print $1","$2","$4 }' | while read PORT
+	CIFS=$IFS
+	IFS=","
+
+	for TOKEN in $LINE
 	do
-		PORT=`echo $PORT | cut -d'?' -f1 | sed. -e 's/\|/-/g' -e 's/\?$//'`
+		echo $TOKEN
+	done | grep '/open/' | sed. -e 's/\/open\//\//' | awk -F'/' '{ print $1","$2","$4 }' | while read PORT
+	do
+		IFS=$CIFS
+
+		PORT=`echo $PORT | sed. -e 's/^ *//' -e 's/\|/-/g' -e 's/\?$//'`
 		echo $HOST,$PORT
 	done
+
+	IFS=$CIFS
 done | sort | uniq
